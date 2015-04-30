@@ -1,0 +1,22 @@
+##Plugin Information##
+name: NameChangeInfo
+version: 0.1
+main: wasabiev.namechange.NameChangeInfo
+description: Search player name history and his reputation for Japanese(Require MCBans)
+author: wasabiev
+
+##Command##
+commands:
+    namehistory:
+      usage: /namehistory
+      aliases: [history]
+      description: Show player name history
+
+##Permission##
+permissions:
+    namechange.info:
+      default: op
+      description: show player name history by command
+    namechange.mod:
+      default: op
+      description: send player name history automatically
