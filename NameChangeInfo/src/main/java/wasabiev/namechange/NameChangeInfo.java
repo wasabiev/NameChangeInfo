@@ -18,6 +18,9 @@ public class NameChangeInfo extends JavaPlugin {
 	public final static String logPrefix = "[NameInfo] ";
 	public final static String msgPrefix = "&d[NameInfo]&f ";
 
+	// Command
+	NameChangeCommandExecutor commandExecutor = new NameChangeCommandExecutor(this);
+
 	// Listener
 	PlayerJoinEventListener playerJoinEvent = new PlayerJoinEventListener(this);
 
@@ -30,6 +33,8 @@ public class NameChangeInfo extends JavaPlugin {
 		if (!pm.isPluginEnabled(this)) {
 			return;
 		}
+
+		getCommand("namehistory").setExecutor(this.commandExecutor);
 
 		pm.registerEvents(playerJoinEvent, this);
 

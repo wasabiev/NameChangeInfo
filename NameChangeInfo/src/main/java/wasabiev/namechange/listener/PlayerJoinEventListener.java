@@ -10,7 +10,8 @@ import wasabiev.namechange.hook.CheckNameHistory;
 
 public class PlayerJoinEventListener implements Listener {
 
-	private CheckNameHistory checkname;
+	private static CheckNameHistory checkname;
+
 	private final NameChangeInfo plugin;
 
 	public PlayerJoinEventListener(final NameChangeInfo plugin) {

@@ -15,12 +15,12 @@ public class LookupPlayer {
 	protected static final Logger log = NameChangeInfo.log;
 	protected static final String logPrefix = NameChangeInfo.logPrefix;
 
-	private MCBansAPI mcbansAPI;
+	private static MCBansAPI mcbansAPI;
 
-	private Integer bans;
-	private Double rep;
+	private static Integer bans;
+	private static Double rep;
 
-	public void getReputation(final Player player, String sender) {
+	public static void getReputation(final Player player, String sender) {
 
 		//初期化
 		bans = -1;
@@ -49,11 +49,11 @@ public class LookupPlayer {
 	 * getter
 	 */
 
-	public int getBans() {
+	public static int getBans() {
 		return bans;
 	}
 
-	public double getRep() {
+	public static double getRep() {
 		return rep;
 	}
 }

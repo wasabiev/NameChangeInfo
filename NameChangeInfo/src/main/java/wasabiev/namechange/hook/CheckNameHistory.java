@@ -26,18 +26,15 @@ public class CheckNameHistory {
 	protected static final String logPrefix = NameChangeInfo.logPrefix;
 	protected static final String msgPrefix = NameChangeInfo.msgPrefix;
 
-	private static String MOJANG_NAME_HISTORY_URL = "https://api.mojang.com/user/profiles/";
-	private static String MOJANG_DATE = "changedToAt";
-	private static String DATE_PATTERN = "yyyy/MM/dd";
+	private static final String MOJANG_NAME_HISTORY_URL = "https://api.mojang.com/user/profiles/";
+	private static final String MOJANG_DATE = "changedToAt";
+	private static final String DATE_PATTERN = "yyyy/MM/dd";
 
 	private static final JSONParser jsonParser = new JSONParser();
 
-	private Plugin plugin = NameChangeInfo.getInstance();
+	private static Plugin plugin = NameChangeInfo.getInstance();
 
-	private LookupPlayer lookupPlayer;
-	private SendMessage sendMessage;
-
-	public void getNameHistory(Player player, String sender) {
+	public static void getNameHistory(Player player, String sender) {
 
 		Map<String, Date> map;
 
@@ -45,31 +42,31 @@ public class CheckNameHistory {
 			UUID uuid = player.getUniqueId();
 			map = getNameHistoryMap(uuid);
 		} catch (Exception e) {
-			sendMessage.sendMessage(sender, msgPrefix + "&cプレイヤー" + player.getName() + "が存在しません");
+			SendMessage.sendMessage(sender, msgPrefix + "&cプレイヤー" + player.getName() + "が存在しません");
 			log.info(logPrefix + "Failed to get UUID! (" + player.getName() + ")");
 			return;
 		}
 
 		if (map.size() < 1) {
 			if (sender.length() == 0 || sender == null) {
-				sendMessage.sendPermMessage(msgPrefix + player.getName() + "は最初のユーザーネームです");
+				SendMessage.sendPermMessage(msgPrefix + player.getName() + "は最初のユーザーネームです");
 			} else {
-				sendMessage.sendMessage(sender, msgPrefix + player.getName() + "は最初のユーザーネームです");
+				SendMessage.sendMessage(sender, msgPrefix + player.getName() + "は最初のユーザーネームです");
 			}
 		} else {
 
 			if (sender.length() == 0 || sender == null) {
-				sendMessage.sendPermMessage(msgPrefix + player.getName() + "は" + map.size() + 1 + "番目のユーザーネームです");
-				sendMessage.sendPermMessage("&8  Name          | Ban | Rep. |  Time");
+				SendMessage.sendPermMessage(msgPrefix + player.getName() + "は" + map.size() + 1 + "番目のユーザーネームです");
+				SendMessage.sendPermMessage("&8  Name          | Ban | Rep. |  Time");
 
 			} else {
-				sendMessage.sendMessage(sender, msgPrefix + player.getName() + "は" + map.size() + 1 + "番目のユーザーネームです");
-				sendMessage.sendMessage(sender, "&8  Name          | Ban | Rep. |  Time");
+				SendMessage.sendMessage(sender, msgPrefix + player.getName() + "は" + map.size() + 1 + "番目のユーザーネームです");
+				SendMessage.sendMessage(sender, "&8  Name          | Ban | Rep. |  Time");
 
 			}
 			for (String p : map.keySet()) {
 
-				lookupPlayer.getReputation(plugin.getServer().getPlayer(p), null);
+				LookupPlayer.getReputation(plugin.getServer().getPlayer(p), null);
 
 				String l = "";
 				for (int i = 0; i < (16 - p.length()); i++) {
@@ -87,8 +84,8 @@ public class CheckNameHistory {
 				String b_c = "";
 				String r_c = "";
 
-				int bans = lookupPlayer.getBans();
-				double rep = lookupPlayer.getRep();
+				int bans = LookupPlayer.getBans();
+				double rep = LookupPlayer.getRep();
 
 				int b_l = Integer.toString(bans).length();
 
@@ -140,9 +137,9 @@ public class CheckNameHistory {
 				}
 
 				if (sender.length() == 0 || sender == null) {
-					sendMessage.sendPermMessage("&7" + p + l + "|" + b_c + b_st + "|" + r_c + r_st + "|" + d);
+					SendMessage.sendPermMessage("&7" + p + l + "|" + b_c + b_st + "|" + r_c + r_st + "|" + d);
 				} else {
-					sendMessage.sendMessage(sender, "&7" + p + l + "|" + b_c + b_st + "|" + r_c + r_st + "|" + d);
+					SendMessage.sendMessage(sender, "&7" + p + l + "|" + b_c + b_st + "|" + r_c + r_st + "|" + d);
 				}
 			}
 		}
@@ -159,7 +156,7 @@ public class CheckNameHistory {
 		return array;
 	}
 
-	private Map<String, Date> getNameHistoryMap(UUID uuid) {
+	private static Map<String, Date> getNameHistoryMap(UUID uuid) {
 		Map<String, Date> map = new HashMap<String, Date>();
 		try {
 			JSONArray array = getNameHistoryJSON(uuid);

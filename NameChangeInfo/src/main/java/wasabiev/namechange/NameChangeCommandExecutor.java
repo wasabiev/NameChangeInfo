@@ -15,30 +15,30 @@ public class NameChangeCommandExecutor implements CommandExecutor {
 
 	private Plugin plugin = NameChangeInfo.getInstance();
 
-	private SendMessage sendMessage;
-	private CheckNameHistory checkNameHistory;
-
 	protected static final Logger log = NameChangeInfo.log;
 	protected static final String logPrefix = NameChangeInfo.logPrefix;
 	protected static final String msgPrefix = NameChangeInfo.msgPrefix;
 
+	public NameChangeCommandExecutor(NameChangeInfo plugin) {
+		this.plugin = plugin;
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		//namehistory
-		if (cmd.getName().equalsIgnoreCase("namehistory")) {
-			if (!sender.hasPermission("namechange.info")) {
-				sendMessage.sendMessage((Player) sender, msgPrefix + "&c権限がありません！");
-				return false;
-			}
 
-			if (args.length != 1) {
-				sendMessage.sendMessage((Player) sender, msgPrefix + "&c対象のプレイヤーを指定してください");
-				return false;
-			}
-
-			checkNameHistory.getNameHistory(plugin.getServer().getPlayer(args[0]), sender.getName());
-
+		if (!sender.hasPermission("namechange.info")) {
+			SendMessage.sendMessage((Player) sender, msgPrefix + "&c権限がありません！");
+			return false;
 		}
-		return false;
+
+		if (args.length != 1) {
+			SendMessage.sendMessage((Player) sender, msgPrefix + "&c対象のプレイヤーを指定してください");
+			return false;
+		}
+
+		CheckNameHistory.getNameHistory(plugin.getServer().getPlayer(args[0]), sender.getName());
+
+		return true;
+
 	}
 }
